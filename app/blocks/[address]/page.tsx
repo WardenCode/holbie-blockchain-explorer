@@ -7,8 +7,8 @@ interface Page {
 export default function Page({ params }: Page) {
 	return (
 		<>
-			<p>Blocks #{params.address}</p>
-			<BlockData />
+			<p>Block #{params.address}</p>
+			<BlockData blockNumber={parseInt(params.address)} />
 		</>
 	);
 }

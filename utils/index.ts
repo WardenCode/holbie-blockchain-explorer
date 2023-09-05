@@ -15,7 +15,7 @@ export const formatChainAsNum = (chainIdHex: string) => {
 };
 
 export const formatAddress = (addr: string) => {
-	return `${addr.substring(0, 6)}...${addr.substring(39)}`;
+	return `${addr.substring(0, 8)}...${addr.substring(39)}`;
 };
 
 export const getEthereumPrice = async () => {
@@ -38,4 +38,24 @@ export const getMarketCap = async () => {
 	const marketCap: number = marketData["market_cap"]["usd"];
 
 	return marketCap;
+};
+
+export const differenceBetweenDates = (date1: Date, date2: Date) => {
+	const secondsDiff = Math.floor(
+		Math.abs(date1.getTime() - date2.getTime()) / 1000,
+	);
+	const minutesDiff = Math.floor(secondsDiff / 60);
+	const hoursDiff = Math.floor(minutesDiff / 60);
+	const daysDiff = Math.floor(hoursDiff / 24);
+	const yearsDiff = Math.floor(daysDiff / 365);
+
+	if (daysDiff >= 365) return `${yearsDiff} years ago`;
+
+	if (hoursDiff >= 24) return `${daysDiff} days ago`;
+
+	if (minutesDiff >= 60) return `${hoursDiff} hours ago`;
+
+	if (secondsDiff >= 60) return `${minutesDiff} minutes ago`;
+
+	return `${secondsDiff.toFixed(0)} seconds ago`;
 };

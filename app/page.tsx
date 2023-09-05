@@ -5,14 +5,14 @@ import SimplyTransactionTable from "@/components/SimplyTransactionsTable";
 
 export default function Page() {
 	return (
-		<div className="h-screen flex items-center justify-center flex-col">
-			<div>
+		<div className="min-h-screen flex items-center flex-col">
+			<div className="flex py-10 w-full pl-10">
 				<SearchBar />
 			</div>
-			<div>
+			<div className="bg-amber-200 rounded w-full mb-10 p-5">
 				<EthereumData />
 			</div>
-			<div>
+			<div className="flex justify-around w-full h-fit py-10">
 				<SimplyBlockTable />
 				<SimplyTransactionTable />
 			</div>

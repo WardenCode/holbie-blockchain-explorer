@@ -9,6 +9,8 @@ import {
 } from "react";
 import { ethers, JsonRpcProvider, FeeData } from "ethers";
 import { getEthereumPrice, getMarketCap } from "../utils/index";
+import { Block } from "ethers";
+import { TransactionResponse } from "ethers";
 
 interface EthersContextData {
 	provider: JsonRpcProvider;
@@ -16,6 +18,13 @@ interface EthersContextData {
 	lastBlock: number;
 	price: number;
 	marketCap: number;
+	getPaginatedBlocks: (
+		totalBlocks: number,
+		batchSize?: number,
+		currentPage?: number,
+	) => Promise<(ethers.Block | null)[]>;
+	getLastBlock: () => Promise<Block | null>;
+	getBlock: (blockNumber: number) => Promise<Block | null>;
 }
 
 const provider = new ethers.JsonRpcProvider(
@@ -23,17 +32,6 @@ const provider = new ethers.JsonRpcProvider(
 );
 
 const EthersContext = createContext<EthersContextData>({} as EthersContextData);
-
-async function getBlocksInRange(startBlock: number, endBlock: number) {
-	const blocks = [];
-
-	for (let i = startBlock; i <= endBlock; i++) {
-		const block = await provider.getBlock(i);
-		blocks.push(block);
-	}
-
-	return blocks;
-}
 
 export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 	const [lastBlock, setLastBlock] = useState(0);
@@ -60,6 +58,45 @@ export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 		setMarketCap(tmpCap);
 	};
 
+	const getBlock = async (blockNumber: number) => {
+		const block = await provider.getBlock(blockNumber, true);
+
+		return block;
+	};
+
+	const getPaginatedBlocks = async (
+		totalBlocks: number,
+		sizePage: number = 10,
+		currentPage: number = 1,
+	) => {
+		const bloques: (Block | null)[] = [];
+		const batch: number[] = [];
+		const fromBlock: number = (currentPage - 1) * sizePage;
+		const toBlock: number = currentPage * sizePage;
+
+		for (let i = fromBlock; i <= toBlock && i <= totalBlocks; i++) {
+			batch.push(totalBlocks - i);
+		}
+
+		const bloqueBatch = await Promise.all(
+			batch.map(async (blockNumber) => {
+				const block = await provider.getBlock(blockNumber, true);
+				return block;
+			}),
+		);
+
+		bloques.push(...bloqueBatch);
+
+		return bloques;
+	};
+
+	const getLastBlock = async () => {
+		const last = await provider.getBlockNumber();
+		const block = await provider.getBlock(last, true);
+
+		return block;
+	};
+
 	useEffect(() => {
 		getLastBlockNumber();
 		getFeeData();
@@ -75,6 +112,9 @@ export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 				feeData,
 				price,
 				marketCap,
+				getPaginatedBlocks,
+				getLastBlock,
+				getBlock,
 			}}>
 			{children}
 		</EthersContext.Provider>
