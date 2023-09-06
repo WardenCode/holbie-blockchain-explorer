@@ -1,7 +1,8 @@
-import { differenceBetweenDates } from "@/utils";
+import { differenceBetweenDates, formatDate } from "@/utils";
 import { TableCell, TableRow } from "@mui/material";
 import { Block, formatUnits } from "ethers";
 import Link from "next/link";
+import { formatMiddleAddress } from "../utils/index";
 
 interface BlockItemProps {
 	block: Block | null;
@@ -15,9 +16,7 @@ export default function BlockItem({ block }: BlockItemProps) {
 			<TableCell>
 				<Link href={`/blocks/${block?.number}`}>{block?.number}</Link>
 			</TableCell>
-			<TableCell>
-				{differenceBetweenDates(new Date(), block?.date || new Date())}
-			</TableCell>
+			<TableCell>{block?.date ? formatDate(block.date) : "-"}</TableCell>
 			<TableCell>{block?.length}</TableCell>
 			<TableCell>
 				<Link href={`/address/${block?.miner}`}>{block?.miner}</Link>

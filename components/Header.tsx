@@ -11,8 +11,6 @@ const pages: Page[] = [
 	{ label: "Dashboard", path: "/" },
 	{ label: "Blocks", path: "/blocks" },
 	{ label: "Transactions", path: "/tx" },
-	{ label: "History", path: "/address/me" },
-	// { label: "Send", path: "/send" },
 ];
 
 export default function Header() {

@@ -1,6 +1,6 @@
 import { TransactionResponse, ethers } from "ethers";
 import Link from "next/link";
-import { formatAddress } from "../utils/index";
+import { formatMiddleAddress } from "../utils/index";
 
 interface SimplyTransactionItemProps {
 	transaction: TransactionResponse;
@@ -20,11 +20,15 @@ export default function SimplyTransactionItem({
 			</p>
 			<p>
 				From:{" "}
-				<Link href={`/address/${from}`}>{formatAddress(from)}</Link>
+				<Link href={`/address/${from}`}>
+					{formatMiddleAddress(from)}
+				</Link>
 			</p>
 			<p>
 				To:{" "}
-				<Link href={`/address/${to}`}>{formatAddress(to || "")}</Link>
+				<Link href={`/address/${to}`}>
+					{formatMiddleAddress(to || "")}
+				</Link>
 			</p>
 			<p>{existence}</p>
 			<p>Amount: {ethers.formatEther(value)} ETH</p>

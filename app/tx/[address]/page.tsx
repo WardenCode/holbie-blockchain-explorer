@@ -8,7 +8,7 @@ export default function Page({ params }: Page) {
 	return (
 		<>
 			<p>Transactions #{params.address}</p>
-			<TransactionData />
+			<TransactionData hash={params.address} />
 		</>
 	);
 }

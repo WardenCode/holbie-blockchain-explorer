@@ -1,6 +1,6 @@
 "use client";
 
-import { useEthers } from "@/hooks/useEthers";
+import { Transaction, getTransactionsByAddress } from "@/utils";
 import {
 	Table,
 	TableBody,
@@ -11,44 +11,33 @@ import {
 	TablePagination,
 	TableRow,
 } from "@mui/material";
-
-import BlockItem from "./BlockItem";
 import { SetStateAction, useEffect, useState } from "react";
-import { Block } from "ethers";
 import TablePaginationActions from "./TablePaginationActions";
+import { useEthers } from "@/hooks/useEthers";
+import AddressTransactionItem from "./AddressTransactionItem";
+
+interface AddressTransactionTableProps {
+	address: string;
+}
 
 const columns = [
+	"Txn Hash",
 	"Block",
-	"Date Time UTC",
-	"Txn",
-	"Fee Recipient",
-	"Gas Used",
-	"Gas Limit",
-	"Base Fee",
+	"Date Time (UTC)",
+	"From",
+	"To",
+	"Value",
+	"Gas Price",
 ];
 
-export default function BlocksTable() {
-	const { getPaginatedBlocks, provider } = useEthers();
+export default function AddressTransactionTable({
+	address,
+}: AddressTransactionTableProps) {
+	const { provider } = useEthers();
 	const [page, setPage] = useState(0);
-	const [blocks, setBlocks] = useState<(Block | null)[]>([]);
-	const [lastestBlock, setLastestBlock] = useState(0);
+	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [totalTransactions, setTotalTransactions] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-
-	const getBlocks = async () => {
-		const latestBlockNumber = await provider.getBlockNumber();
-		const tmpBlocks = await getPaginatedBlocks(
-			latestBlockNumber,
-			rowsPerPage,
-			page + 1,
-		);
-
-		setBlocks(tmpBlocks);
-		setLastestBlock(latestBlockNumber);
-	};
-
-	useEffect(() => {
-		getBlocks();
-	}, [page]);
 
 	const handleChangePage = (_event: any, newPage: SetStateAction<number>) => {
 		setPage(newPage);
@@ -58,6 +47,28 @@ export default function BlocksTable() {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	useEffect(() => {
+		const getTotalTransactions = async () => {
+			const tmpTotalTransactions =
+				await provider.getTransactionCount(address);
+
+			setTotalTransactions(tmpTotalTransactions);
+		};
+
+		const getTransactionsPage = async () => {
+			const tmpTransactions = await getTransactionsByAddress(
+				address,
+				page,
+				rowsPerPage,
+			);
+
+			setTransactions(tmpTransactions);
+		};
+
+		getTotalTransactions();
+		getTransactionsPage();
+	}, []);
 
 	return (
 		<div className="bg-slate-100">
@@ -71,15 +82,15 @@ export default function BlocksTable() {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{blocks
+						{transactions
 							.slice(
 								page * rowsPerPage,
 								page * rowsPerPage + rowsPerPage,
 							)
-							.map((block) => (
-								<BlockItem
-									key={block?.hash}
-									block={block}
+							.map((transaction) => (
+								<AddressTransactionItem
+									key={transaction.hash}
+									transaction={transaction}
 								/>
 							))}
 					</TableBody>
@@ -88,7 +99,7 @@ export default function BlocksTable() {
 							<TablePagination
 								rowsPerPageOptions={[5, 10, 15]}
 								colSpan={3}
-								count={lastestBlock}
+								count={totalTransactions}
 								rowsPerPage={rowsPerPage}
 								page={page}
 								SelectProps={{

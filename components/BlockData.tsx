@@ -5,7 +5,7 @@ import { Block, formatEther, formatUnits } from "ethers";
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import Link from "next/link";
-import { differenceBetweenDates } from "@/utils";
+import { differenceBetweenDates, formatDateToCustomString } from "@/utils";
 
 interface BlockDataProps {
 	blockNumber: number;
@@ -36,8 +36,10 @@ export default function BlockData({ blockNumber }: BlockDataProps) {
 			</Link>
 			<p>
 				Timestamp:{" "}
-				{differenceBetweenDates(new Date(), new Date(data?.timestamp!))}{" "}
-				{new Date(data?.timestamp!).toUTCString()}
+				{differenceBetweenDates(new Date(), data?.date || new Date())}{" "}
+				<span>
+					({data?.date ? formatDateToCustomString(data.date) : "-"})
+				</span>
 			</p>
 			<p>Transactions: {data?.length}</p>
 			<p>Fee Recipient: {data?.miner}</p>
@@ -46,7 +48,7 @@ export default function BlockData({ blockNumber }: BlockDataProps) {
 				{data?.difficulty?.toLocaleString("en-GB") || 0}
 			</p>
 			<p>Gas Used: {data?.gasUsed?.toLocaleString("en-GB") || 0}</p>
-			<p>Gas Limit: {data?.gasLimit?.toLocaleString("en-GB")}</p>
+			<p>Gas Limit: {data?.gasLimit?.toLocaleString("en-GB") || 0}</p>
 			<p>Hash: {data?.hash}</p>
 			<p>ParentHash: {data?.parentHash}</p>
 			<p>Nonce: {data?.nonce}</p>

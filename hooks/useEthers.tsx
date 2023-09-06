@@ -11,6 +11,7 @@ import { ethers, JsonRpcProvider, FeeData } from "ethers";
 import { getEthereumPrice, getMarketCap } from "../utils/index";
 import { Block } from "ethers";
 import { TransactionResponse } from "ethers";
+import { TransactionReceipt } from "ethers";
 
 interface EthersContextData {
 	provider: JsonRpcProvider;
@@ -25,10 +26,12 @@ interface EthersContextData {
 	) => Promise<(ethers.Block | null)[]>;
 	getLastBlock: () => Promise<Block | null>;
 	getBlock: (blockNumber: number) => Promise<Block | null>;
+	getTransaction: (hash: string) => Promise<TransactionResponse | null>;
+	getTransactionReceipt: (hash: string) => Promise<TransactionReceipt | null>;
 }
 
 const provider = new ethers.JsonRpcProvider(
-	"https://mainnet.infura.io/v3/51478f98bd114f8bb9bfee5a69e5f349",
+	process.env.NEXT_PUBLIC_ETHEREUM_NETWORK_FULL_URL,
 );
 
 const EthersContext = createContext<EthersContextData>({} as EthersContextData);
@@ -80,7 +83,7 @@ export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 
 		const bloqueBatch = await Promise.all(
 			batch.map(async (blockNumber) => {
-				const block = await provider.getBlock(blockNumber, true);
+				const block = await getBlock(blockNumber);
 				return block;
 			}),
 		);
@@ -92,9 +95,21 @@ export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 
 	const getLastBlock = async () => {
 		const last = await provider.getBlockNumber();
-		const block = await provider.getBlock(last, true);
+		const block = await getBlock(last);
 
 		return block;
+	};
+
+	const getTransaction = async (hash: string) => {
+		const transaction = await provider.getTransaction(hash);
+
+		return transaction;
+	};
+
+	const getTransactionReceipt = async (hash: string) => {
+		const transaction = await provider.getTransactionReceipt(hash);
+
+		return transaction;
 	};
 
 	useEffect(() => {
@@ -115,6 +130,8 @@ export const EthersContextProvider = ({ children }: PropsWithChildren) => {
 				getPaginatedBlocks,
 				getLastBlock,
 				getBlock,
+				getTransaction,
+				getTransactionReceipt,
 			}}>
 			{children}
 		</EthersContext.Provider>
