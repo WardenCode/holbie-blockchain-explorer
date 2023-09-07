@@ -159,3 +159,17 @@ export const getTransactionsByAddress = async (
 
 	return data.result;
 };
+
+export function roundToFiveDecimals(string: string) {
+	let number = parseFloat(string);
+
+	if (string.split(".")[1]?.length > 5) {
+		number = Math.round(number * 1e5) / 1e5;
+	}
+
+	return number.toString();
+}
+
+export function arrayOfSize(size: number) {
+	return Array.from(Array(size).keys());
+}

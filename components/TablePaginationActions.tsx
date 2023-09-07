@@ -37,10 +37,16 @@ export default function TablePaginationActions({
 	};
 
 	return (
-		<Box sx={{ flexShrink: 0, ml: 2.5 }}>
+		<Box sx={{ flexShrink: 0, ml: 2.5, color: "white" }}>
 			<IconButton
 				onClick={handleFirstPageButtonClick}
 				disabled={page === 0}
+				sx={{
+					color: "white",
+					"&.Mui-disabled": {
+						color: "rgba(255, 255, 255, 0.4)",
+					},
+				}}
 				aria-label="first page">
 				{theme.direction === "rtl" ? (
 					<LastPageIcon />
@@ -51,6 +57,12 @@ export default function TablePaginationActions({
 			<IconButton
 				onClick={handleBackButtonClick}
 				disabled={page === 0}
+				sx={{
+					color: "white",
+					"&.Mui-disabled": {
+						color: "rgba(255, 255, 255, 0.4)",
+					},
+				}}
 				aria-label="previous page">
 				{theme.direction === "rtl" ? (
 					<KeyboardArrowRight />
@@ -61,6 +73,12 @@ export default function TablePaginationActions({
 			<IconButton
 				onClick={handleNextButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				sx={{
+					color: "white",
+					"&.Mui-disabled": {
+						color: "rgba(255, 255, 255, 0.4)",
+					},
+				}}
 				aria-label="next page">
 				{theme.direction === "rtl" ? (
 					<KeyboardArrowLeft />
@@ -71,6 +89,12 @@ export default function TablePaginationActions({
 			<IconButton
 				onClick={handleLastPageButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				sx={{
+					color: "white",
+					"&.Mui-disabled": {
+						color: "rgba(255, 255, 255, 0.4)",
+					},
+				}}
 				aria-label="last page">
 				{theme.direction === "rtl" ? (
 					<FirstPageIcon />

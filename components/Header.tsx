@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-// import WalletButton from "./WalletButton";
 
 interface Page {
 	label: string;
@@ -15,7 +14,7 @@ const pages: Page[] = [
 
 export default function Header() {
 	return (
-		<header className="backdrop-blur bg-slate-900/75 w-full flex justify-between px-6 h-16">
+		<header className="backdrop-blur bg-eth-colors-blackAlpha-500 w-full flex justify-between px-6 h-16">
 			<div className="relative w-48">
 				<Image
 					alt="app-logo"
@@ -32,9 +31,9 @@ export default function Header() {
 						{pages.map(({ path, label }: Page) => (
 							<li
 								key={label}
-								className="h-full flex hover:bg-slate-800/75">
+								className="h-full flex">
 								<Link
-									className="h-full px-5 flex items-center"
+									className="h-full px-5 flex items-center hover:text-eth-colors-orange-500"
 									href={path}>
 									{label}
 								</Link>
@@ -42,7 +41,6 @@ export default function Header() {
 						))}
 					</ul>
 				</nav>
-				{/* <WalletButton /> */}
 			</div>
 		</header>
 	);

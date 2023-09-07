@@ -22,10 +22,15 @@ export default function AdressData({ address }: AddressDataProps) {
 	}, []);
 
 	return (
-		<>
-			<p>Address Data</p>
-			<p>ETH Balance</p>
-			<span>{balance} ETH</span>
-		</>
+		<div className="flex flex-col gap-3">
+			<div className="flex flex-col gap-1">
+				<p className="text-eth-colors-orange-400">Address:</p>
+				<p>{address}</p>
+			</div>
+			<div className="flex flex-col gap-1">
+				<p className="text-eth-colors-orange-400">ETH Balance:</p>
+				<p>{balance} ETH</p>
+			</div>
+		</div>
 	);
 }

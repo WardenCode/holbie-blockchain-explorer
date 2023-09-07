@@ -12,13 +12,12 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 17, 17, 17;
   --background-end-rgb: 17, 17, 17;
+  --background: #272627;
 }
 
 /* @media (prefers-color-scheme: dark) {} */
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background: var(--background);
 }

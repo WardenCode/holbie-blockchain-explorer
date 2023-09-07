@@ -18,31 +18,47 @@ export default function AddressTransactionItem({
 	return (
 		<TableRow>
 			<TableCell>
-				<Link href={`/tx/${transaction.hash}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/tx/${transaction.hash}`}>
 					{formatAddress(transaction.hash)}
 				</Link>
 			</TableCell>
 			<TableCell>
-				<Link href={`/blocks/${transaction.blockNumber}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/blocks/${transaction.blockNumber}`}>
 					{transaction.blockNumber}
 				</Link>
 			</TableCell>
 			<TableCell>
-				{formatDate(new Date(Number(transaction.timeStamp)))}
+				<span className="text-eth-colors-whiteAlpha-900">
+					{formatDate(new Date(Number(transaction.timeStamp)))}
+				</span>
 			</TableCell>
 			<TableCell>
-				<Link href={`/address/${transaction.from}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/address/${transaction.from}`}>
 					{formatMiddleAddress(transaction.from)}
 				</Link>
 			</TableCell>
 			<TableCell>
-				<Link href={`/address/${transaction.to}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/address/${transaction.to}`}>
 					{formatMiddleAddress(transaction.to)}
 				</Link>
 			</TableCell>
-			<TableCell>{formatEther(transaction.value)} ETH</TableCell>
 			<TableCell>
-				{formatUnits(transaction.gasPrice, "gwei")} Gwei
+				<span className="text-eth-colors-whiteAlpha-900">
+					{formatEther(transaction.value)} ETH
+				</span>
+			</TableCell>
+			<TableCell>
+				<span className="text-eth-colors-whiteAlpha-900">
+					{formatUnits(transaction.gasPrice, "gwei")} Gwei
+				</span>
 			</TableCell>
 		</TableRow>
 	);

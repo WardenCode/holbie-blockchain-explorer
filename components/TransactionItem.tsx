@@ -30,28 +30,48 @@ export default function TransactionItem({ transaction }: TransactionItemProps) {
 	return (
 		<TableRow>
 			<TableCell>
-				<Link href={`/tx/${transaction.hash}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/tx/${transaction.hash}`}>
 					{formatAddress(transaction.hash)}
 				</Link>
 			</TableCell>
 			<TableCell>
-				<Link href={`/blocks/${transaction.blockNumber}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/blocks/${transaction.blockNumber}`}>
 					{transaction.blockNumber}
 				</Link>
 			</TableCell>
-			<TableCell>{block?.date ? formatDate(block.date) : "-"}</TableCell>
 			<TableCell>
-				<Link href={`/address/${transaction.from}`}>
+				<span className="text-eth-colors-whiteAlpha-900">
+					{block?.date ? formatDate(block.date) : "-"}
+				</span>
+			</TableCell>
+			<TableCell>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/address/${transaction.from}`}>
 					{formatMiddleAddress(transaction.from)}
 				</Link>
 			</TableCell>
 			<TableCell>
-				<Link href={`/address/${transaction.to}`}>
+				<Link
+					className="text-eth-colors-orange-500 hover:text-eth-colors-orange-400"
+					href={`/address/${transaction.to}`}>
 					{transaction.to ? formatMiddleAddress(transaction.to) : "-"}
 				</Link>
 			</TableCell>
-			<TableCell>{formatEther(transaction.value)} ETH</TableCell>
-			<TableCell>{formatUnits(transaction.gasPrice, "gwei")}</TableCell>
+			<TableCell>
+				<span className="text-eth-colors-whiteAlpha-900">
+					{formatEther(transaction.value)} ETH
+				</span>
+			</TableCell>
+			<TableCell>
+				<span className="text-eth-colors-whiteAlpha-900">
+					{formatUnits(transaction.gasPrice, "gwei")}
+				</span>
+			</TableCell>
 		</TableRow>
 	);
 }
