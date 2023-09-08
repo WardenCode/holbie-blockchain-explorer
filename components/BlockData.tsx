@@ -170,9 +170,15 @@ export default function BlockData({ blockNumber }: BlockDataProps) {
 						Base Fee Per Gas:
 					</span>
 					<span className="inline-block w-8/12">
-						{formatEther(data?.baseFeePerGas || BigInt(0))}{" "}
-						{formatUnits(data?.baseFeePerGas || BigInt(0), "gwei")}
-						Gwei
+						{formatEther(data?.baseFeePerGas || BigInt(0))} ETH{" "}
+						<span className="text-eth-colors-gray-400">
+							(
+							{formatUnits(
+								data?.baseFeePerGas || BigInt(0),
+								"gwei",
+							)}{" "}
+							Gwei)
+						</span>
 					</span>
 				</div>
 			</div>

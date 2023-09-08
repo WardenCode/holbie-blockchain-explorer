@@ -88,7 +88,7 @@ export default function TransactionData({ hash }: TransactionDataProps) {
 				</div>
 				<div>
 					<span className="inline-block w-4/12 text-eth-colors-gray-400">
-						TimeStamp:
+						Timestamp:
 					</span>
 					<span className="inline-block w-8/12">
 						{block?.date
