@@ -19,7 +19,7 @@ export default function Header() {
 				<Image
 					alt="app-logo"
 					src="/headerLogo.png"
-					style={{ minWidth: "192px" }}
+					style={{ minWidth: "100px" }}
 					sizes="100%"
 					fill
 					priority
